@@ -14,6 +14,7 @@ export type FileInputProps<T extends FieldValues> = {
   disabled?: boolean
   className?: string
   description?: string
+  imagePreview?: string | null
 }
 
 const FileInput = <T extends FieldValues>({
@@ -26,8 +27,9 @@ const FileInput = <T extends FieldValues>({
   disabled = false,
   className = '',
   description = '',
+  imagePreview = null,
 }: FileInputProps<T>) => {
-  const [preview, setPreview] = useState<string | null>(null)
+  const [preview, setPreview] = useState<string | null>(imagePreview)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = (

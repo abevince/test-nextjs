@@ -27,7 +27,6 @@ const TextInputForm = <T extends FieldValues>({
   ...props
 }: TextInputFormProps<T>) => {
   const { errors } = useFormState({ control, name })
-  console.log(errors)
   return (
     <Controller
       name={name}
