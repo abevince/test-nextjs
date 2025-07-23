@@ -1,0 +1,45 @@
+import { Recipe } from '@/types/recipe'
+import { Star } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+
+const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
+  return (
+    <div className="w-full h-60 border-2 border-gray-300 rounded-md overflow-hidden flex  gap-2 shadow-md">
+      <div className=" bg-white p-4  aspect-video h-full relative">
+        <Image
+          src={recipe.image}
+          alt="kare-kare"
+          fill
+          className="w-full object-cover"
+        />
+        <button
+          className="absolute top-2 right-2 flex gap-2 text-yellow-400 hover:text-yellow-500 cursor-pointer"
+          aria-label="Add to favorites"
+        >
+          <Star className="size-4" fill="currentColor" />
+        </button>
+      </div>
+      <div className="flex flex-col gap-2 py-4 px-4 w-full">
+        <h4 className="text-3xl font-bold">{recipe.title}</h4>
+        <p className="text-gray-500">{recipe.description}</p>
+        <Link
+          href={`/recipes/${recipe.slug}`}
+          className="text-blue-500 hover:text-blue-600 text-sm"
+        >
+          See more..
+        </Link>
+        <div className="flex gap-2 text-sm text-gray-500 justify-between mt-auto">
+          <span>
+            Added by: <span className="font-bold">{recipe.author}</span>
+          </span>
+          <span>
+            Added on: <span className="font-bold">{recipe.timeCreated}</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default RecipeCard
