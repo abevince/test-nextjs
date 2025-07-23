@@ -98,8 +98,8 @@ export default function Home() {
         <MainNav>
           <SearchInput onSearch={handleSearch} />
         </MainNav>
-        <div className="w-full flex justify-center p-10 gap-10 max-h-[calc(100vh-4rem)] overflow-auto ">
-          <div className="w-1/4">
+        <div className="w-full flex flex-col md:flex-row justify-center p-4 md:p-10 md:gap-10 gap-4 max-h-[calc(100vh-4rem)] overflow-auto">
+          <div className="w-full md:w-1/4">
             <Card className="space-y-2">
               <p className="text-lg font-bold">Sort by</p>
               <Select
@@ -144,10 +144,10 @@ export default function Home() {
               Clear Filters
             </button>
           </div>
-          <Card className="w-3/4 overflow-y-auto space-y-4 relative">
+          <Card className="w-full md:w-3/4 overflow-y-auto space-y-4 relative">
             <Link
               href="/create"
-              className="absolute top-2 right-2 bg-orange-400 text-white p-2 rounded-full flex items-center justify-center"
+              className="absolute lg:top-2 lg:right-2 top-0 right-0 bg-orange-400 text-white p-2 rounded-full flex items-center justify-center z-30"
             >
               <PlusIcon className="size-4" strokeWidth={3} />
             </Link>

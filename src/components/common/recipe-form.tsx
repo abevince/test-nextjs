@@ -79,10 +79,10 @@ const RecipeForm = ({ recipe }: { recipe?: Recipe }) => {
 
   return (
     <form
-      className="w-full flex justify-center px-10 gap-10 max-h-[calc(100vh-4rem)] overflow-auto"
+      className="w-full flex flex-col md:flex-row justify-center px-4 md:px-10 md:gap-10 gap-4 max-h-[calc(100vh-4rem)] pt-4 pb-10 md:py-0"
       onSubmit={form.handleSubmit(onSubmit)}
     >
-      <Card className="w-1/3 self-start h-auto">
+      <Card className="w-full md:w-1/3 self-start h-auto">
         <FileInput
           imagePreview={recipe?.image}
           name="image"
@@ -93,7 +93,7 @@ const RecipeForm = ({ recipe }: { recipe?: Recipe }) => {
           description="The image will be used as the recipe cover."
         />
       </Card>
-      <Card className="w-3/4 gap-4 flex flex-col">
+      <Card className="w-full md:w-3/4 gap-4 flex flex-col">
         <div className="flex justify-between items-center">
           <h4 className="text-2xl font-bold">
             {recipe ? 'Edit Recipe' : 'Create Recipe'}

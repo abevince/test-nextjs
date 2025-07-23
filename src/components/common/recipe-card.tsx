@@ -6,7 +6,7 @@ import RecipeFavoriteButton from './recipe-favorite-button'
 
 const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   return (
-    <div className="w-full h-60 border-2 border-gray-300 rounded-md overflow-hidden flex  gap-2 shadow-md">
+    <div className="w-full h-auto lg:h-60 border-2 border-gray-300 rounded-md overflow-hidden flex flex-col lg:flex-row gap-2 shadow-md">
       <div className=" bg-white p-4  aspect-video h-full relative">
         <Image
           src={recipe.image}
