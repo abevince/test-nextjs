@@ -1,8 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Recipe Management App
+
+A modern recipe management web application built with Next.js, allowing users to create, browse, and manage their favorite recipes.
+
+## Features
+
+- **Create Recipes**: Add new recipes with ingredients, instructions, and images
+- **Browse Recipes**: View all recipes in an organized layout
+- **Favorite Recipes**: Mark recipes as favorites for quick access
+- **Recipe Details**: View detailed recipe pages with full instructions
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Modern UI**: Beautiful interface built with TailwindCSS and Headless UI
+
+## Tech Stack
+
+- **Framework**: [Next.js 14](https://nextjs.org/) with TypeScript
+- **Styling**: [TailwindCSS](https://tailwindcss.com/) with Tailwind Merge
+- **State Management**: [TanStack Query](https://tanstack.com/query) for server state
+- **Forms**: [React Hook Form](https://react-hook-form.com/) with [Zod](https://zod.dev/) validation
+- **UI Components**: [Headless UI](https://headlessui.com/) and [Lucide React](https://lucide.dev/)
+- **File Handling**: [Formidable](https://github.com/node-formidable/formidable) for image uploads
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -14,27 +54,44 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```
+src/
+├── pages/           # Next.js pages and API routes
+├── components/      # Reusable React components
+├── hooks/          # Custom React hooks
+├── utils/          # Utility functions
+├── types/          # TypeScript type definitions
+├── schema/         # Zod validation schemas
+├── api/            # API utility functions
+└── styles/         # Global styles
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-## Learn More
+## API Routes
 
-To learn more about Next.js, take a look at the following resources:
+- `GET /api/recipes` - Fetch all recipes
+- `POST /api/recipes` - Create a new recipe
+- `GET /api/recipes/[slug]` - Get recipe by slug
+- `PUT /api/recipes/[slug]` - Update recipe
+- `DELETE /api/recipes/[slug]` - Delete recipe
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+MIT
