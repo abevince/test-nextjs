@@ -1,11 +1,10 @@
 import { fetchRecipes } from '@/api/recipes'
 import MainNav from '@/components/common/main-nav'
 import RecipeCard from '@/components/common/recipe-card'
+import RecipeFilters from '@/components/common/recipe-filters'
 import RecipeSkeleton from '@/components/common/recipe-skeleton'
 import SearchInput from '@/components/common/search-input'
 import Card from '@/components/ui/card'
-import Checkbox from '@/components/ui/checkbox'
-import Select from '@/components/ui/select'
 import { useRecipes } from '@/hooks/use-recipes'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { PlusIcon } from 'lucide-react'
@@ -69,23 +68,6 @@ export default function Home() {
     [router, searchParams],
   )
 
-  const handleSort = (sort: 'title' | 'timeCreated', order: 'asc' | 'desc') => {
-    const params = new URLSearchParams(searchParams)
-    params.set('sort', sort)
-    params.set('order', order)
-    router.push(`/?${params.toString()}`)
-  }
-
-  const toggleFilter = () => {
-    const params = new URLSearchParams(searchParams)
-    if (!filter) {
-      params.set('filter', 'favorites')
-    } else {
-      params.delete('filter')
-    }
-    router.push(`/?${params.toString()}`)
-  }
-
   return (
     <>
       <Head>
@@ -99,52 +81,8 @@ export default function Home() {
           <SearchInput onSearch={handleSearch} />
         </MainNav>
         <div className="w-full flex flex-col md:flex-row justify-center p-4 md:p-10 md:gap-10 gap-4 max-h-[calc(100vh-4rem)] overflow-auto">
-          <div className="w-full md:w-1/4">
-            <Card className="space-y-2">
-              <p className="text-lg font-bold">Sort by</p>
-              <Select
-                label="Title"
-                options={[
-                  { label: 'Ascending', value: 'asc' },
-                  { label: 'Descending', value: 'desc' },
-                ]}
-                value={order ?? 'asc'}
-                onChange={(value) =>
-                  handleSort('title', value as 'asc' | 'desc')
-                }
-              />
-              <Select
-                label="Time Created"
-                options={[
-                  { label: 'Ascending', value: 'asc' },
-                  { label: 'Descending', value: 'desc' },
-                ]}
-                value={order ?? 'asc'}
-                onChange={(value) =>
-                  handleSort('timeCreated', value as 'asc' | 'desc')
-                }
-              />
-            </Card>
-            <Card className="mt-4">
-              <p>Filters</p>
-              <Checkbox
-                label="Favorites"
-                id="favorites"
-                name="favorites"
-                checked={filter === 'favorites'}
-                onChange={() => toggleFilter()}
-              />
-            </Card>
-            <button
-              className="bg-orange-400 text-white px-4 py-1 rounded-full flex  text-sm items-center justify-center mt-4 ml-auto"
-              onClick={() => {
-                router.push('/')
-              }}
-            >
-              Clear Filters
-            </button>
-          </div>
-          <Card className="w-full md:w-3/4 overflow-y-auto space-y-4 relative">
+          <RecipeFilters />
+          <Card className="w-full md:w-3/4 overflow-y-auto space-y-4 relative h-auto min-h-96">
             <Link
               href="/create"
               className="absolute lg:top-2 lg:right-2 top-0 right-0 bg-orange-400 text-white p-2 rounded-full flex items-center justify-center z-30"
