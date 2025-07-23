@@ -1,14 +1,36 @@
-import Card from '@/components/card'
-import MainNav from '@/components/main-nav'
-import RecipeCard from '@/components/recipe-card'
-import SearchInput from '@/components/search-input'
-import { ChevronDownIcon } from 'lucide-react'
+import { fetchRecipes } from '@/api/recipes'
+import MainNav from '@/components/common/main-nav'
+import SearchInput from '@/components/common/search-input'
+import Card from '@/components/ui/card'
+import Checkbox from '@/components/ui/checkbox'
+import { useRecipes } from '@/hooks/use-recipes'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
+import { ChevronDownIcon, PlusIcon } from 'lucide-react'
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
+import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export async function getStaticProps() {
+  const queryClient = new QueryClient()
+
+  await queryClient.prefetchQuery({
+    queryKey: ['recipes'],
+    queryFn: () => fetchRecipes(),
+  })
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  }
+}
+
 export default function Home() {
+  const { data: recipes, isLoading } = useRecipes()
+
+  console.log(recipes)
   return (
     <>
       <Head>
@@ -48,51 +70,40 @@ export default function Home() {
             </Card>
             <Card className="mt-4">
               <p>Filters</p>
-              <div className="flex gap-3">
-                <div className="flex h-6 shrink-0 items-center">
-                  <div className="group grid size-4 grid-cols-1">
-                    <input
-                      id="favorites"
-                      name="favorites"
-                      type="checkbox"
-                      aria-describedby="favorites-description"
-                      className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-blue-400 checked:bg-blue-500 indeterminate:border-blue-400 indeterminate:bg-orange-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                    />
-                    <svg
-                      fill="none"
-                      viewBox="0 0 14 14"
-                      className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-[:disabled]:stroke-gray-950/25"
-                    >
-                      <path
-                        d="M3 8L6 11L11 3.5"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="opacity-0 group-has-[:checked]:opacity-100"
-                      />
-                      <path
-                        d="M3 7H11"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="opacity-0 group-has-[:indeterminate]:opacity-100"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <div className="text-sm/6">
-                  <label
-                    htmlFor="favorites"
-                    className="font-medium text-gray-900"
-                  >
-                    Favorites
-                  </label>
-                </div>
-              </div>
+              <Checkbox
+                label="Favorites"
+                id="favorites"
+                name="favorites"
+                checked={false}
+                onChange={() => {}}
+              />
             </Card>
           </div>
-          <Card className="w-3/4 overflow-auto">
-            <RecipeCard />
+          <Card className="w-3/4 overflow-y-auto space-y-4 relative">
+            <Link
+              href="/create"
+              className="absolute top-2 right-2 bg-orange-400 text-white p-2 rounded-full flex items-center justify-center"
+            >
+              <PlusIcon className="size-4" strokeWidth={3} />
+            </Link>
+            {true &&
+              Array.from({ length: 4 }).map((_, index) => (
+                <div className="w-full h-60 border-2 border-gray-200 rounded-md overflow-hidden flex  gap-2 shadow-md">
+                  <div className=" bg-gray-200 p-4 aspect-video h-full relative animate-pulse"></div>
+                </div>
+              ))}
+            {/* {recipes?.map((recipe) => (
+              <RecipeCard key={recipe.slug} recipe={recipe} />
+            ))}
+            {recipes?.map((recipe) => (
+              <RecipeCard key={recipe.slug} recipe={recipe} />
+            ))}{' '}
+            {recipes?.map((recipe) => (
+              <RecipeCard key={recipe.slug} recipe={recipe} />
+            ))}{' '}
+            {recipes?.map((recipe) => (
+              <RecipeCard key={recipe.slug} recipe={recipe} />
+            ))} */}
           </Card>
         </div>
       </main>
