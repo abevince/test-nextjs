@@ -5,12 +5,16 @@ import RecipeSkeleton from '@/components/common/recipe-skeleton'
 import SearchInput from '@/components/common/search-input'
 import Card from '@/components/ui/card'
 import Checkbox from '@/components/ui/checkbox'
+import Select from '@/components/ui/select'
 import { useRecipes } from '@/hooks/use-recipes'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
-import { ChevronDownIcon, PlusIcon } from 'lucide-react'
+import { PlusIcon } from 'lucide-react'
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
+import { useCallback, useRef } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,9 +34,58 @@ export async function getStaticProps() {
 }
 
 export default function Home() {
-  const { data: recipes, isLoading } = useRecipes()
+  const router = useRouter()
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
-  console.log(recipes)
+  const searchParams = useSearchParams()
+  const sort = searchParams.get('sort') as 'title' | 'timeCreated' | undefined
+  const order = searchParams.get('order') as 'asc' | 'desc' | undefined
+  const search = searchParams.get('search') as string | undefined
+  const filter = searchParams.get('filter') as string | undefined
+
+  const { data: recipes, isLoading } = useRecipes(
+    {
+      by: sort ?? 'title',
+      order: order ?? 'asc',
+    },
+    search,
+    filter,
+  )
+  const handleSearch = useCallback(
+    (search: string) => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current)
+      }
+      debounceRef.current = setTimeout(() => {
+        const params = new URLSearchParams(searchParams)
+        if (search.trim()) {
+          params.set('search', search.trim())
+        } else {
+          params.delete('search')
+        }
+        router.push(`/?${params.toString()}`)
+      }, 300)
+    },
+    [router, searchParams],
+  )
+
+  const handleSort = (sort: 'title' | 'timeCreated', order: 'asc' | 'desc') => {
+    const params = new URLSearchParams(searchParams)
+    params.set('sort', sort)
+    params.set('order', order)
+    router.push(`/?${params.toString()}`)
+  }
+
+  const toggleFilter = () => {
+    const params = new URLSearchParams(searchParams)
+    if (!filter) {
+      params.set('filter', 'favorites')
+    } else {
+      params.delete('filter')
+    }
+    router.push(`/?${params.toString()}`)
+  }
+
   return (
     <>
       <Head>
@@ -43,32 +96,34 @@ export default function Home() {
       </Head>
       <main className="min-w-full min-h-screen bg-gray-200">
         <MainNav>
-          <SearchInput onSearch={() => {}} />
+          <SearchInput onSearch={handleSearch} />
         </MainNav>
         <div className="w-full flex justify-center p-10 gap-10 max-h-[calc(100vh-4rem)] overflow-auto ">
           <div className="w-1/4">
-            <Card>
-              <p>Sort by Title</p>
-              <div>
-                <div className="mt-2 grid grid-cols-1">
-                  <select
-                    id="sort"
-                    name="sort"
-                    defaultValue=""
-                    className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900  outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-400 sm:text-sm/6"
-                  >
-                    <option value="" className="text-gray-400">
-                      Sort by
-                    </option>
-                    <option value="asc">Ascending</option>
-                    <option value="desc">Descending</option>
-                  </select>
-                  <ChevronDownIcon
-                    aria-hidden="true"
-                    className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
-                  />
-                </div>
-              </div>
+            <Card className="space-y-2">
+              <p className="text-lg font-bold">Sort by</p>
+              <Select
+                label="Title"
+                options={[
+                  { label: 'Ascending', value: 'asc' },
+                  { label: 'Descending', value: 'desc' },
+                ]}
+                value={order ?? 'asc'}
+                onChange={(value) =>
+                  handleSort('title', value as 'asc' | 'desc')
+                }
+              />
+              <Select
+                label="Time Created"
+                options={[
+                  { label: 'Ascending', value: 'asc' },
+                  { label: 'Descending', value: 'desc' },
+                ]}
+                value={order ?? 'asc'}
+                onChange={(value) =>
+                  handleSort('timeCreated', value as 'asc' | 'desc')
+                }
+              />
             </Card>
             <Card className="mt-4">
               <p>Filters</p>
@@ -76,10 +131,18 @@ export default function Home() {
                 label="Favorites"
                 id="favorites"
                 name="favorites"
-                checked={false}
-                onChange={() => {}}
+                checked={filter === 'favorites'}
+                onChange={() => toggleFilter()}
               />
             </Card>
+            <button
+              className="bg-orange-400 text-white px-4 py-1 rounded-full flex  text-sm items-center justify-center mt-4 ml-auto"
+              onClick={() => {
+                router.push('/')
+              }}
+            >
+              Clear Filters
+            </button>
           </div>
           <Card className="w-3/4 overflow-y-auto space-y-4 relative">
             <Link

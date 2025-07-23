@@ -19,8 +19,8 @@ const Checkbox = ({
             id={id}
             name={name}
             type="checkbox"
-            defaultChecked={checked}
             onChange={onChange}
+            checked={checked}
             aria-describedby="favorites-description"
             className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-blue-400 checked:bg-blue-500 indeterminate:border-blue-400 indeterminate:bg-orange-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
           />
