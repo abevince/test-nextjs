@@ -1,5 +1,6 @@
 import {
   createRecipe,
+  deleteRecipe,
   fetchRecipe,
   fetchRecipes,
   updateRecipe,
@@ -24,8 +25,9 @@ const useRecipes = (
         )
       }
       if (filter) {
-        response = response.filter((recipe) => recipe.favorite === 'true')
+        response = response.filter((recipe) => recipe.favorite === true)
       }
+
       return response.sort((a, b) => {
         if (sort.order === 'asc') {
           return a[sort.by].localeCompare(b[sort.by])
@@ -70,4 +72,22 @@ const useUpdateRecipe = () => {
   })
 }
 
-export { useCreateRecipe, useRecipe, useRecipes, useUpdateRecipe }
+const useDeleteRecipe = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (slug: string) => deleteRecipe(slug),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recipes'] })
+    },
+    onError: (error: any) => {
+      console.error('Recipe deletion error:', error)
+    },
+  })
+}
+export {
+  useCreateRecipe,
+  useDeleteRecipe,
+  useRecipe,
+  useRecipes,
+  useUpdateRecipe,
+}

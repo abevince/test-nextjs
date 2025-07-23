@@ -1,1 +1,15 @@
-[]
+[
+  {
+    "title": "Kare Kare",
+    "description": "sadfasdfasdf\r\nasdfasdfasdfasdf\r\nasdfasdfasdf\r\n\r\nasdfasdfasdf",
+    "ingredients": "asdfasdfasdfasdf\r\nasdfasdfasdf\r\nasdfasdfasdf\r\n\r\n\r\nasdfasdfasdfasdfasdf",
+    "instructions": "sadfasdfasdfasdf",
+    "author": "Vince",
+    "email": "gg@gg.com",
+    "slug": "kare-kare",
+    "image": "/images/1753269603517-pfyb26.jpg",
+    "timeCreated": "2025-07-23T11:20:03.517Z",
+    "favorite": true,
+    "timeUpdated": "2025-07-23T11:20:09.072Z"
+  }
+]

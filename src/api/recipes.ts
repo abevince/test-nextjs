@@ -33,3 +33,10 @@ export const updateRecipe = async (
   })
   return response.json()
 }
+
+export const deleteRecipe = async (slug: string): Promise<Recipe> => {
+  const response = await fetch(`/api/recipes/${slug}`, {
+    method: 'DELETE',
+  })
+  return response.json()
+}

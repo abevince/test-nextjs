@@ -10,7 +10,7 @@ const RecipeFavoriteButton = ({ recipe }: { recipe: Recipe }) => {
     Object.entries(recipe).forEach(([key, value]) => {
       formData.append(key, value.toString())
     })
-    formData.set('favorite', recipe.favorite === 'true' ? 'false' : 'true')
+    formData.set('favorite', recipe.favorite ? 'false' : 'true')
 
     updateRecipe({
       formData,
@@ -30,7 +30,7 @@ const RecipeFavoriteButton = ({ recipe }: { recipe: Recipe }) => {
       ) : (
         <Star
           className="size-4"
-          fill={recipe.favorite === 'true' ? 'currentColor' : 'none'}
+          fill={recipe.favorite ? 'currentColor' : 'none'}
         />
       )}
     </button>

@@ -45,7 +45,7 @@ export default function Home() {
 
   const { data: recipes, isLoading } = useRecipes(
     {
-      by: sort ?? 'title',
+      by: sort ?? 'timeCreated',
       order: order ?? 'asc',
     },
     search,

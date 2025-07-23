@@ -9,6 +9,7 @@ import slugify from 'slugify'
 import { z } from 'zod'
 import Card from '../ui/card'
 import FileInput from './file-input'
+import RecipeDeleteButton from './recipe-delete-button'
 import TextInputForm from './text-input-form'
 import TextareaForm from './textarea-form'
 
@@ -23,7 +24,7 @@ const RecipeForm = ({ recipe }: { recipe?: Recipe }) => {
     defaultValues: recipe
       ? {
           ...recipe,
-          favorite: recipe.favorite === 'true' ? true : false,
+          favorite: recipe.favorite ? true : false,
           image: recipe.image ? new File([], recipe.image) : undefined,
         }
       : {
@@ -93,9 +94,12 @@ const RecipeForm = ({ recipe }: { recipe?: Recipe }) => {
         />
       </Card>
       <Card className="w-3/4 gap-4 flex flex-col">
-        <h4 className="text-2xl font-bold">
-          {recipe ? 'Edit Recipe' : 'Create Recipe'}
-        </h4>
+        <div className="flex justify-between items-center">
+          <h4 className="text-2xl font-bold">
+            {recipe ? 'Edit Recipe' : 'Create Recipe'}
+          </h4>
+          {recipe ? <RecipeDeleteButton slug={recipe?.slug ?? ''} /> : null}
+        </div>
         <TextInputForm
           control={form.control}
           type="text"

@@ -47,8 +47,6 @@ export default async function handler(
     form.parse(
       req,
       async (err: any, fields: formidable.Fields, files: formidable.Files) => {
-        console.log('ERR', err)
-        console.log('FIELDS', fields)
         if (err) {
           console.error('Formidable parse error:', err)
           res
@@ -119,9 +117,13 @@ export default async function handler(
             slug: fields?.slug?.[0] || existingRecipe.slug,
             image: imagePath,
             timeUpdated: new Date().toISOString(),
-            favorite: fields?.favorite?.[0] || existingRecipe.favorite,
+            favorite:
+              fields?.favorite?.[0] === 'true'
+                ? true
+                : fields?.favorite?.[0] === 'false'
+                ? false
+                : existingRecipe.favorite,
           }
-          console.log('REP', updatedRecipe)
 
           recipes[recipeIndex] = updatedRecipe
 
@@ -139,6 +141,51 @@ export default async function handler(
         }
       },
     )
+  } else if (req.method === 'DELETE') {
+    try {
+      const data = await fs.readFile(
+        path.join(process.cwd(), 'recipes.json'),
+        'utf8',
+      )
+      const recipes = JSON.parse(data)
+      const recipeIndex = recipes.findIndex(
+        (recipe: any) => recipe.slug === req.query.slug,
+      )
+
+      if (recipeIndex === -1) {
+        res.status(404).json({ message: 'Recipe not found' })
+        return
+      }
+
+      const recipeToDelete = recipes[recipeIndex]
+
+      if (recipeToDelete.image && recipeToDelete.image.startsWith('/images/')) {
+        const imagePath = path.join(
+          process.cwd(),
+          'public',
+          recipeToDelete.image,
+        )
+        try {
+          await fs.unlink(imagePath)
+        } catch (deleteErr) {
+          console.error('Failed to delete image file:', deleteErr)
+        }
+      }
+
+      recipes.splice(recipeIndex, 1)
+
+      await fs.writeFile(
+        path.join(process.cwd(), 'recipes.json'),
+        JSON.stringify(recipes, null, 2),
+      )
+
+      res.status(200).json({ message: 'Recipe deleted' })
+    } catch (deleteErr) {
+      console.error('Failed to delete recipe:', deleteErr)
+      res
+        .status(500)
+        .json({ message: 'Failed to delete recipe', error: deleteErr })
+    }
   } else {
     res.status(405).json({ message: 'Method not allowed' })
   }
