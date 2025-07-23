@@ -49,6 +49,35 @@ export default async function handler(
           return
         }
 
+        // Check for duplicate titles before processing image
+        const title = fields?.title?.[0] || ''
+        if (title) {
+          try {
+            const existingData = await fs.readFile(
+              path.join(process.cwd(), 'recipes.json'),
+              'utf8',
+            )
+            const existingRecipes = JSON.parse(existingData)
+            const duplicateTitle = existingRecipes.find(
+              (recipe: any) =>
+                recipe.title.toLowerCase() === title.toLowerCase(),
+            )
+
+            if (duplicateTitle) {
+              res.status(409).json({
+                message: 'A recipe with this title already exists',
+                error: 'DUPLICATE_TITLE',
+              })
+              return
+            }
+          } catch (readErr) {
+            // If recipes.json doesn't exist yet, that's fine - no duplicates possible
+            console.log(
+              'No existing recipes file found, proceeding with recipe creation',
+            )
+          }
+        }
+
         let imageFile: File | undefined
         const fileField = files.image
         if (Array.isArray(fileField)) {
@@ -88,6 +117,7 @@ export default async function handler(
             image: imagePath,
             timeCreated: new Date().toISOString(),
           }
+
           await addNewRecipe(recipeData)
           res.status(201).json({ message: 'Recipe added', success: true })
         } catch (addErr) {

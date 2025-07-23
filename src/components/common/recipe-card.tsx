@@ -1,4 +1,5 @@
 import { Recipe } from '@/types/recipe'
+import { formatDate } from '@/utils/lib'
 import { Star } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -24,7 +25,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
         <h4 className="text-3xl font-bold">{recipe.title}</h4>
         <p className="text-gray-500">{recipe.description}</p>
         <Link
-          href={`/recipes/${recipe.slug}`}
+          href={`/${recipe.slug}`}
           className="text-blue-500 hover:text-blue-600 text-sm"
         >
           See more..
@@ -34,7 +35,8 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
             Added by: <span className="font-bold">{recipe.author}</span>
           </span>
           <span>
-            Added on: <span className="font-bold">{recipe.timeCreated}</span>
+            Added on:{' '}
+            <span className="font-bold">{formatDate(recipe.timeCreated)}</span>
           </span>
         </div>
       </div>

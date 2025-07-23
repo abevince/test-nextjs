@@ -1,4 +1,9 @@
-import { createRecipe, fetchRecipe, fetchRecipes } from '@/api/recipes'
+import {
+  createRecipe,
+  fetchRecipe,
+  fetchRecipes,
+  updateRecipe,
+} from '@/api/recipes'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 const useRecipes = () => {
@@ -10,7 +15,7 @@ const useRecipes = () => {
 
 const useRecipe = (slug: string) => {
   return useQuery({
-    queryKey: ['recipe', slug],
+    queryKey: ['recipes', slug],
     queryFn: () => fetchRecipe(slug),
   })
 }
@@ -22,7 +27,21 @@ const useCreateRecipe = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['recipes'] })
     },
+    onError: (error: any) => {
+      console.log('Recipe creation error:', error)
+    },
   })
 }
 
-export { useCreateRecipe, useRecipe, useRecipes }
+const useUpdateRecipe = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ formData, slug }: { formData: FormData; slug: string }) =>
+      updateRecipe(slug, formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recipes'] })
+    },
+  })
+}
+
+export { useCreateRecipe, useRecipe, useRecipes, useUpdateRecipe }

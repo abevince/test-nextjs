@@ -1,5 +1,7 @@
 import { fetchRecipes } from '@/api/recipes'
 import MainNav from '@/components/common/main-nav'
+import RecipeCard from '@/components/common/recipe-card'
+import RecipeSkeleton from '@/components/common/recipe-skeleton'
 import SearchInput from '@/components/common/search-input'
 import Card from '@/components/ui/card'
 import Checkbox from '@/components/ui/checkbox'
@@ -86,24 +88,18 @@ export default function Home() {
             >
               <PlusIcon className="size-4" strokeWidth={3} />
             </Link>
-            {true &&
-              Array.from({ length: 4 }).map((_, index) => (
-                <div className="w-full h-60 border-2 border-gray-200 rounded-md overflow-hidden flex  gap-2 shadow-md">
-                  <div className=" bg-gray-200 p-4 aspect-video h-full relative animate-pulse"></div>
-                </div>
+            {isLoading &&
+              Array.from({ length: 3 }).map((_, index) => (
+                <RecipeSkeleton key={index} />
               ))}
-            {/* {recipes?.map((recipe) => (
+            {!isLoading && !recipes?.length && (
+              <div className="w-full h-full flex items-center justify-center">
+                <p className="text-gray-500">No recipes found</p>
+              </div>
+            )}
+            {recipes?.map((recipe) => (
               <RecipeCard key={recipe.slug} recipe={recipe} />
             ))}
-            {recipes?.map((recipe) => (
-              <RecipeCard key={recipe.slug} recipe={recipe} />
-            ))}{' '}
-            {recipes?.map((recipe) => (
-              <RecipeCard key={recipe.slug} recipe={recipe} />
-            ))}{' '}
-            {recipes?.map((recipe) => (
-              <RecipeCard key={recipe.slug} recipe={recipe} />
-            ))} */}
           </Card>
         </div>
       </main>
