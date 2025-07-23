@@ -117,6 +117,7 @@ export default async function handler(
             slug: fields?.slug?.[0] || existingRecipe.slug,
             image: imagePath,
             timeUpdated: new Date().toISOString(),
+            favorite: fields?.favorite?.[0] || existingRecipe.favorite,
           }
 
           recipes[recipeIndex] = updatedRecipe

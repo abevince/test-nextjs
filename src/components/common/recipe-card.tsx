@@ -1,8 +1,8 @@
 import { Recipe } from '@/types/recipe'
 import { formatDate } from '@/utils/lib'
-import { Star } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import RecipeFavoriteButton from './recipe-favorite-button'
 
 const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   return (
@@ -14,12 +14,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
           fill
           className="w-full object-cover"
         />
-        <button
-          className="absolute top-2 right-2 flex gap-2 text-yellow-400 hover:text-yellow-500 cursor-pointer"
-          aria-label="Add to favorites"
-        >
-          <Star className="size-4" fill="currentColor" />
-        </button>
+        <RecipeFavoriteButton recipe={recipe} />
       </div>
       <div className="flex flex-col gap-2 py-4 px-4 w-full">
         <h4 className="text-3xl font-bold">{recipe.title}</h4>

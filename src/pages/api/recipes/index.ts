@@ -116,6 +116,7 @@ export default async function handler(
             slug: fields?.slug?.[0] ?? '',
             image: imagePath,
             timeCreated: new Date().toISOString(),
+            favorite: false,
           }
 
           await addNewRecipe(recipeData)
