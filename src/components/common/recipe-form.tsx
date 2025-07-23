@@ -10,6 +10,7 @@ import { z } from 'zod'
 import Card from '../ui/card'
 import FileInput from './file-input'
 import TextInputForm from './text-input-form'
+import TextareaForm from './textarea-form'
 
 type RecipeFormData = z.infer<typeof recipeSchema>
 
@@ -101,25 +102,22 @@ const RecipeForm = ({ recipe }: { recipe?: Recipe }) => {
           name="title"
           disabled={!!recipe}
         />
-        <TextInputForm
+        <TextareaForm
           control={form.control}
-          type="text"
           label="Description"
           id="description"
           placeholder="Description"
           name="description"
         />
-        <TextInputForm
+        <TextareaForm
           control={form.control}
-          type="text"
           label="Ingredients"
           id="ingredients"
           placeholder="Ingredients"
           name="ingredients"
         />
-        <TextInputForm
+        <TextareaForm
           control={form.control}
-          type="text"
           label="Instructions"
           id="instructions"
           placeholder="Instructions"
