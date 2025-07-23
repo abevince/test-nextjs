@@ -8,5 +8,5 @@ export type Recipe = {
   email: string
   timeCreated: string
   slug: string
-  favorite: boolean
+  favorite: boolean | string
 }

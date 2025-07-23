@@ -23,6 +23,7 @@ const RecipeForm = ({ recipe }: { recipe?: Recipe }) => {
     defaultValues: recipe
       ? {
           ...recipe,
+          favorite: recipe.favorite === 'true' ? true : false,
           image: recipe.image ? new File([], recipe.image) : undefined,
         }
       : {
@@ -38,6 +39,8 @@ const RecipeForm = ({ recipe }: { recipe?: Recipe }) => {
         },
     mode: 'onBlur',
   })
+
+  console.log('ERRORS', form.formState.errors)
 
   const onSubmit = async (data: RecipeFormData) => {
     const formData = new FormData()

@@ -9,5 +9,5 @@ export const recipeSchema = z.object({
   email: z.email('Invalid email address'),
   slug: z.string(),
   image: z.instanceof(File),
-  favorite: z.boolean().optional(),
+  favorite: z.boolean(),
 })

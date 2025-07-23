@@ -4,12 +4,13 @@ import { Loader2, Star } from 'lucide-react'
 
 const RecipeFavoriteButton = ({ recipe }: { recipe: Recipe }) => {
   const { mutate: updateRecipe, isPending } = useUpdateRecipe()
+
   const handleFavorite = () => {
     const formData = new FormData()
     Object.entries(recipe).forEach(([key, value]) => {
       formData.append(key, value.toString())
     })
-    formData.append('favorite', recipe.favorite ? 'false' : 'true')
+    formData.set('favorite', recipe.favorite === 'true' ? 'false' : 'true')
 
     updateRecipe({
       formData,
@@ -29,7 +30,7 @@ const RecipeFavoriteButton = ({ recipe }: { recipe: Recipe }) => {
       ) : (
         <Star
           className="size-4"
-          fill={recipe.favorite ? 'currentColor' : 'none'}
+          fill={recipe.favorite === 'true' ? 'currentColor' : 'none'}
         />
       )}
     </button>

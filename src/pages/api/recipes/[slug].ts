@@ -47,6 +47,8 @@ export default async function handler(
     form.parse(
       req,
       async (err: any, fields: formidable.Fields, files: formidable.Files) => {
+        console.log('ERR', err)
+        console.log('FIELDS', fields)
         if (err) {
           console.error('Formidable parse error:', err)
           res
@@ -119,6 +121,7 @@ export default async function handler(
             timeUpdated: new Date().toISOString(),
             favorite: fields?.favorite?.[0] || existingRecipe.favorite,
           }
+          console.log('REP', updatedRecipe)
 
           recipes[recipeIndex] = updatedRecipe
 

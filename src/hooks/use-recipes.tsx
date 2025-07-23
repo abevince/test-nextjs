@@ -24,7 +24,7 @@ const useRecipes = (
         )
       }
       if (filter) {
-        response = response.filter((recipe) => recipe.favorite)
+        response = response.filter((recipe) => recipe.favorite === 'true')
       }
       return response.sort((a, b) => {
         if (sort.order === 'asc') {
